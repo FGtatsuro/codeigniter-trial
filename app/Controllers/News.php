@@ -4,12 +4,14 @@ namespace App\Controllers;
 
 use App\Models\NewsModel;
 use CodeIgniter\Controller;
+use CodeIgniter\Config\Factories;
 
 class News extends Controller
 {
 	public function index()
 	{
-		$model = new NewsModel();
+		# https://codeigniter4.github.io/userguide/concepts/factories.html
+		$model = Factories::models('NewsModel');
 
 		$data['news'] = $model->getNews();
 		$data['title'] = 'News archive';
@@ -21,7 +23,7 @@ class News extends Controller
 
 	public function view($slug)
 	{
-		$model = new NewsModel();
+		$model = Factories::models('NewsModel');
 
 		$data['news'] = $model->getNews($slug);
 		if (empty($data['news']))
@@ -37,7 +39,7 @@ class News extends Controller
 
 	public function create()
 	{
-		$model = new NewsModel();
+		$model = Factories::models('NewsModel');
 
 		if ($this->request->getMethod() === 'post' && $this->validate([
 			'title' => 'required|min_length[3]|max_length[255]',
